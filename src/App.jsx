@@ -1,20 +1,20 @@
 // App.js
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserForm from "./components/UserForm";
-import UserList from "./components/UserList";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <h1>Hello</h1>
-      {/* <Switch>
-        <Route path="/" exact component={UserList} />
-        <Route path="/create" component={UserForm} />
-        <Route path="/edit/:userId" component={UserForm} />
-      </Switch> */}
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<UserForm />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
-}
+};
 
 export default App;

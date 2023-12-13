@@ -1,25 +1,23 @@
-// components/UserList.js
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+// UserList.js
 
-const UserList = () => {
-  const users = useSelector((state) => state.users);
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../redux/userSlice";
+
+function UserList() {
+  const users = useSelector((state) => state.users.list);
+  const dispatch = useDispatch();
 
   return (
     <div>
-      <Link to="/create">Create User</Link>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <Link
-              to={`/edit/${user.id}`}
-            >{`${user.firstName} ${user.lastName}`}</Link>
-          </li>
-        ))}
-      </ul>
+      {users.map((user) => (
+        <div key={user.id}>
+          {user.name}
+          <button onClick={() => dispatch(removeUser(user.id))}>Delete</button>
+        </div>
+      ))}
     </div>
   );
-};
+}
 
 export default UserList;

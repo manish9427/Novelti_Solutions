@@ -1,17 +1,19 @@
-// components/UserForm.js
-import React, { useState, useEffect } from "react";
+// src/components/UserForm.js
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { createUser, updateUser, selectUserById } from "../redux/userSlice";
+import {
+  createUser,
+  updateUser,
+  deleteUser,
+  selectAllUsers,
+} from "../redux/userSlice";
 
 const UserForm = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { userId } = useParams();
-
-  const user = useSelector((state) => selectUserById(state, userId));
+  const users = useSelector(selectAllUsers);
 
   const [formData, setFormData] = useState({
+    id: null,
     firstName: "",
     lastName: "",
     email: "",
@@ -26,19 +28,10 @@ const UserForm = () => {
 
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    if (user) {
-      setFormData(user);
-    }
-  }, [user]);
-
   const validateForm = () => {
     let errors = {};
-    // Implement validation logic
-    if (!formData.firstName || formData.firstName.length < 5) {
-      errors.firstName = "First Name must be at least 5 characters";
-    }
-    // Add validations for other fields
+
+    // Validation logic for each field
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -49,24 +42,49 @@ const UserForm = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleCreateUser = () => {
     if (validateForm()) {
-      if (userId) {
-        dispatch(updateUser({ userId, ...formData }));
-      } else {
-        dispatch(createUser(formData));
-      }
-
-      history.push("/");
+      dispatch(createUser({ ...formData, id: new Date().getTime() }));
+      clearForm();
     }
+  };
+
+  const handleUpdateUser = () => {
+    if (validateForm()) {
+      dispatch(updateUser(formData));
+      clearForm();
+    }
+  };
+
+  const handleEdit = (userId) => {
+    const userToEdit = users.find((user) => user.id === userId);
+    setFormData(userToEdit);
+  };
+
+  const handleDelete = (userId) => {
+    dispatch(deleteUser(userId));
+  };
+
+  const clearForm = () => {
+    setFormData({
+      id: null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      mobile: "",
+      address1: "",
+      address2: "",
+      state: "",
+      city: "",
+      country: "",
+      zipCode: "",
+    });
   };
 
   return (
     <div>
-      <h2>{userId ? "Edit User" : "Create User"}</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>User Form</h2>
+      <form>
         <div>
           <label htmlFor="firstName">First Name:</label>
           <input
@@ -76,13 +94,125 @@ const UserForm = () => {
             value={formData.firstName}
             onChange={handleChange}
           />
-          {formErrors.firstName && (
-            <div className="error">{formErrors.firstName}</div>
-          )}
         </div>
-        {/* Add similar code for other form fields */}
-        <button type="submit">{userId ? "Update User" : "Create User"}</button>
+
+        <div>
+          <label htmlFor="lastName">Last Name:</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="mobile">Mobile:</label>
+          <input
+            type="tel"
+            id="mobile"
+            name="mobile"
+            value={formData.mobile}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="address1">Address 1:</label>
+          <input
+            type="text"
+            id="address1"
+            name="address1"
+            value={formData.address1}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="address2">Address 2:</label>
+          <input
+            type="text"
+            id="address2"
+            name="address2"
+            value={formData.address2}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="state">State:</label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="city">City:</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="country">Country:</label>
+          <input
+            type="text"
+            id="country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="zipCode">Zip Code:</label>
+          <input
+            type="text"
+            id="zipCode"
+            name="zipCode"
+            value={formData.zipCode}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={formData.id ? handleUpdateUser : handleCreateUser}
+        >
+          {formData.id ? "Update User" : "Create User"}
+        </button>
       </form>
+
+      <h2>User List</h2>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {`${user.firstName} ${user.lastName}`}
+            <button onClick={() => handleEdit(user.id)}>Edit</button>
+            <button onClick={() => handleDelete(user.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

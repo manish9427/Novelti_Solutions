@@ -1,6 +1,4 @@
-// redux/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-
 const userSlice = createSlice({
   name: "users",
   initialState: [],
@@ -9,8 +7,8 @@ const userSlice = createSlice({
       state.push(action.payload);
     },
     updateUser: (state, action) => {
-      const { userId, ...updatedUser } = action.payload;
-      const existingUser = state.find((user) => user.id === userId);
+      const { id, ...updatedUser } = action.payload;
+      const existingUser = state.find((user) => user.id === id);
       if (existingUser) {
         Object.assign(existingUser, updatedUser);
       }
@@ -23,7 +21,6 @@ const userSlice = createSlice({
 
 export const { createUser, updateUser, deleteUser } = userSlice.actions;
 
-export const selectUserById = (state, userId) =>
-  state.users.find((user) => user.id === userId);
+export const selectAllUsers = (state) => state.users;
 
 export default userSlice.reducer;
