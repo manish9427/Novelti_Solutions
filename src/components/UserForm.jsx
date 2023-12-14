@@ -204,15 +204,45 @@ const UserForm = () => {
       </form>
 
       <h2>User List</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {`${user.firstName} ${user.lastName}`}
-            <button onClick={() => handleEdit(user.id)}>Edit</button>
-            <button onClick={() => handleDelete(user.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Address 1</th>
+            <th>Address 2</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Zip Code</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.email}</td>
+              <td>{user.mobile}</td>
+              <td>{user.address1}</td>
+              <td>{user.address2}</td>
+              <td>{user.state}</td>
+              <td>{user.city}</td>
+              <td>{user.country}</td>
+              <td>{user.zipCode}</td>
+              <td>
+                <button onClick={() => handleEdit(user.id)}>Edit</button>
+                <button onClick={() => handleDelete(user.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
