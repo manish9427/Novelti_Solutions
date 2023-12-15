@@ -7,7 +7,7 @@ import {
   deleteUser,
   selectAllUsers,
 } from "../redux/userSlice";
-
+import "./UserForm.css";
 const UserForm = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);

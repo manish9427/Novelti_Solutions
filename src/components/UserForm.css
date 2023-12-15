@@ -1,0 +1,59 @@
+/* UserForm.css */
+
+/* Style for the form container */
+.user-form-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Style for form labels */
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Style for form inputs */
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+/* Style for the button */
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style for the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Style for table headers */
+th {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+}
+
+/* Style for table cells */
+td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* Style for edit and delete buttons in the table */
+button.edit-btn {
+  background-color: #2196f3;
+}
+
+button.delete-btn {
+  background-color: #f44336;
+  margin-left: 5px;
+}
